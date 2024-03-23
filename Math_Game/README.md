@@ -1,7 +1,7 @@
 *Please note that this code is still a work in progress.*
 
 # Introduction
-math_game.py is a simply math game that whenever the user will entre the correct answer based on the mathematical operation selected, the LED will "clap" (i.e. blink).
+math_game.py is a simple math game where the user will enter the correct answer based on the mathematical operation selected. When the user enters the correct answer, the LED will "clap" (i.e. blink).
 
 # Description
 The user will be prompted to select one of the following mathematical operations at the start of the program:
