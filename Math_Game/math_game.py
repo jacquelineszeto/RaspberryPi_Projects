@@ -9,43 +9,37 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 
-class math():
-    
+class MyMath(ABC):
     def __init__(self, a, b):
         self.a = a
         self.b = b
-    
-    @abstractmethod
-    def operation(self):
-        pass
-    
-class add(math):
-    def __init__(self, a, b):
-        super().__init__(a, b)
-        
-    def operation(self, a, b):
-        return self.a+self.b
-    
-class subtract(math):
-    def __init__(self, a, b):
-        super().__init__(a, b)
-        
-    def operation(self, a, b):
-        return self.a-self.b
 
-class divide(math):
-    def __init__(self, a, b):
-        super().__init__(a, b)
-    
+    @abstractmethod
     def operation(self, a, b):
-        return self.a/self.b
-    
-class multiply(math):
-    def __init__(self, a, b):
-        super().__init__(a, b)
-        
+        pass
+
+class add(MyMath):
     def operation(self, a, b):
-        return self.a*self.b
+        return a+b
+
+class subtract(MyMath):
+    def operation(self, a, b):
+        return a-b
+
+class divide(MyMath):
+    def operation(self, a, b):
+        result = a/b
+
+        if result.is_integer():
+            formatted_result = int(result)
+        else:
+            formatted_result = round(result, 2)
+
+        return formatted_result
+
+class multiply(MyMath):
+    def operation(self, a, b):
+        return a*b
 
 def selectInput():
     selection = input("\nSelect number for operation: \n 1. Add\n 2. Subtract\n 3. Divide\n 4. Multiply\n\n")
