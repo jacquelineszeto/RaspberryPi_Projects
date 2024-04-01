@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import RPi.GPIO as GPIO
 import time
 import re
@@ -48,12 +50,13 @@ class multiply(math):
         return self.a*self.b
 
 def selectInput():
-    selection = input("\nSelect number for operation: \n 1. Add\n 2. Subtract\n 3. Divide\n 4. Multiply\n\n")
+    selection = input("\nSelect number for operation: \n 1. Add\n 2. Subtract\n 3. Divide\n 4. Multiply\n> ")
     return selection
 
-def endDecision():
-    decision = input("\nWould you like to play again? (yes/no)\n")
-    return decision
+def playAgain():
+    decision = input("\nWould you like to play again? ([yes]/no): ")
+
+    return decision.lower() in ["yes", "y"]
 
 def correctAns():
     print("\nCongratulations! The LED is clapping for you!\n")
@@ -63,7 +66,7 @@ def correctAns():
         time.sleep(.25)
         GPIO.output(18, False)
         time.sleep(.25)
-    
+
 if __name__ == "__main__":
     while True:
         selection = selectInput()
@@ -75,41 +78,28 @@ if __name__ == "__main__":
             "3": "divide",
             "4": "multiply"
         }
-        
+
         while True:
             try:
-                command = (eval(options[selection]))(a, b)  
+                command = (eval(options[selection]))(a, b)
                 break
             except KeyError:
                 print("\nPlease select a number from the list. Try again.\n")
                 selection = selectInput()
-            
+
         value = command.operation(a,b)
-        ans = input(f"\nThe numbers randomly generated are {a} and {b}. You have chosen to {options[selection]}. What is the answer?\n")
-        
-        # need to check that the input is indeed numbers. use regexp since it comes in as string
-#         if 
-        
-        count = 3
-        if ans == str(value):
-            correctAns()
+
+        for count in range(3, -1, -1):
+            ans = input(f"\nThe numbers randomly generated are {a} and {b}. You have chosen to {options[selection]}. What is the answer? ")
+
+            if ans == str(value):
+                correctAns()
+                break
+            else:
+                print(f"\nWrong answer! You have {count} more tries. Please enter your answer: ")
         else:
-            while count != 0:
-                # need to work on this section - this is incomplete
-                ans = input(f"\nWrong answer! You have {count} more tries. Please enter your answer.\n")
-                if ans == str(value):
-                    correctAns()
-                    break
-                count -= 1
-            print("\nYou have exceeded the number of tries. Goodbye!")
-            sys.exit()
-        
-        if endDecision() == "no":
+            print("\nYou have exceeded the number of tries. Game Over!")
+
+        if not playAgain():
             print("\nThanks for playing, goodbye!")
             break
-
-            
-
-
-    
-    
