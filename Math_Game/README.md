@@ -30,6 +30,8 @@ Ensuring that you have the proper circuit configured on your Raspberry Pi, simpl
 
 # Credits
 Jacqueline Szeto
-2024
+
+## Contributors
+Greg Brown
 
 
