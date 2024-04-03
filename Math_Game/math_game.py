@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import RPi.GPIO as GPIO
 import time
 import re
-import sys
 from abc import ABC, abstractmethod
 from random import randint, randrange
+import RPi.GPIO as GPIO
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -30,14 +29,11 @@ class subtract(MyMath):
 
 class divide(MyMath):
     def operation(self, a, b):
-        result = a/b
-
-        if result.is_integer():
-            formatted_result = int(result)
+        # floor division
+        if a < b:
+            return b//a
         else:
-            formatted_result = round(result, 2)
-
-        return formatted_result
+            return a//b
 
 class multiply(MyMath):
     def operation(self, a, b):
@@ -49,11 +45,10 @@ def selectInput():
 
 def playAgain():
     decision = input("\nWould you like to play again? ([yes]/no): ")
-
     return decision.lower() in ["yes", "y"]
 
 def correctAns():
-    print("\nCongratulations! The LED is clapping for you!\n")
+    print("\nCongratulations! The LED is clapping for you!")
     t_end = time.time() + 5
     while time.time() < t_end:
         GPIO.output(18, True)
@@ -64,8 +59,8 @@ def correctAns():
 if __name__ == "__main__":
     while True:
         selection = selectInput()
-        a = randint(10,99)
-        b = randint(10,99)
+        a = randint(1, 100)
+        b = randint(1, 100)
         options = {
             "1": "add",
             "2": "subtract",
@@ -77,14 +72,25 @@ if __name__ == "__main__":
             try:
                 command = (eval(options[selection]))(a, b)
                 break
-            except KeyError:
-                print("\nPlease select a number from the list. Try again.\n")
+             except KeyError:
+                print("\nPlease select a number from the list. Try again.")
                 selection = selectInput()
+        
+        if options[selection] == "divide":
+            print("\nTo simplify division, the answer will be a whole number i.e. how many times can the higher number divide into the smaller number.")
 
-        value = command.operation(a,b)
+        value = command.operation(a, b)
 
         for count in range(3, -1, -1):
-            ans = input(f"\nThe numbers randomly generated are {a} and {b}. You have chosen to {options[selection]}. What is the answer? ")
+            while True:
+                try:
+                    ans = input(f"\nThe numbers randomly generated are {a} and {b}. You have chosen to {options[selection]}. What is the answer? ")
+                    if re.search('[A-z]+', ans) is not None:
+                        raise
+                    else:
+                        break
+                except:
+                    print("\nPlease input a valid number. Try again.")
 
             if ans == str(value):
                 correctAns()
