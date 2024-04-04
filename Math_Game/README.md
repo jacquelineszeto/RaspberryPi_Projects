@@ -13,6 +13,8 @@ The user will be prompted to select one of the following mathematical operations
 
 Two random number generators are used to generate two numbers and the script will use these two numbers to carry the operation on. The script will prompt the user to enter the answer. If the answer is correct, the LED will blink for 5 seconds. If the answer is incorrect, the user will have three more attemps before the program terminates.
 
+NOTE: Floor division is used for division.
+
 ## Circuit Configuration
 This project requires the following:
 
@@ -33,5 +35,6 @@ Jacqueline Szeto
 
 ## Contributors
 Greg Brown
+
 Justin Evangelista
 
